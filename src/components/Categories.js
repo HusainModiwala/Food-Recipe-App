@@ -5,9 +5,10 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated, {FadeInDown} from "react-native-reanimated";
+import { CachedImage } from "../helpers/images";
 
 
-const Categories = ({ categories, activeCategory, setActiveCategory }) => {
+const Categories = ({ categories, activeCategory, handleChange }) => {
   return (
     <Animated.View entering={FadeInDown.duration(650).springify()}>
       <ScrollView
@@ -25,11 +26,11 @@ const Categories = ({ categories, activeCategory, setActiveCategory }) => {
             <TouchableOpacity
               key={item.idCategory}
               className="flex items-center space-y-1"
-              onPress={() => setActiveCategory(item.strCategory)}
+              onPress={() => handleChange(item.strCategory)}
             >
               <View className={"rounded-full p-2.5 " + activeCategoryClass}>
-                <Image
-                  source={{ uri: item.strCategoryThumb }}
+                <CachedImage
+                  uri = { item.strCategoryThumb }
                   style={{ height: hp(9), width: hp(9) }}
                   className="rounded-full"
                 />

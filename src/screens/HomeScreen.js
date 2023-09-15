@@ -7,16 +7,20 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Categories from "../components/Categories";
+import Recipes from "../components/Recipes";
 import axios from "axios";
 
 const HomeScreen = () => {
-  const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
+  const categoryUrl = "https://themealdb.com/api/json/v1/1/categories.php";
+  const recipeUrl = "https://themealdb.com/api/json/v1/1/filter.php?c=";
+
   const [activeCategory, setActiveCategory] = useState("Beef");
   const [categories, setCategories] = useState([]);
+  const [meals, setMeals] = useState([]);
 
   const getCategories = async () => {
     try {
-      let response = await axios.get(url);
+      let response = await axios.get(categoryUrl);
       if (response && response.data) {
         setCategories(response.data.categories);
       }
@@ -24,9 +28,26 @@ const HomeScreen = () => {
       console.warn(error);
     }
   };
+  const getRecipes = async (category="Beef") => {
+    try {
+      let response = await axios.get(recipeUrl+category);
+      if (response && response.data) {
+        setMeals(response.data.meals);
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const handleChange = (category) => {
+    getRecipes(category);
+    setActiveCategory(category);
+    // setMeals([])
+  }
 
   useEffect(() => {
     getCategories();
+    getRecipes();
   }, []);
 
   return (
@@ -89,10 +110,16 @@ const HomeScreen = () => {
             <Categories
               categories={categories}
               activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
+              handleChange={handleChange}
             />
           )}
         </View>
+
+        {/* recipes */}
+        <View>
+          <Recipes categories={categories} meals={meals} />
+        </View>
+        <View></View>
       </ScrollView>
     </View>
   );
