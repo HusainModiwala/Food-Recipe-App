@@ -5,7 +5,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated, {FadeInDown} from "react-native-reanimated";
-import { CachedImage } from "../helpers/images";
 
 
 const Categories = ({ categories, activeCategory, handleChange }) => {
@@ -29,8 +28,8 @@ const Categories = ({ categories, activeCategory, handleChange }) => {
               onPress={() => handleChange(item.strCategory)}
             >
               <View className={"rounded-full p-2.5 " + activeCategoryClass}>
-                <CachedImage
-                  uri = { item.strCategoryThumb }
+                <Image
+                  source={{uri: item.strCategoryThumb }}
                   style={{ height: hp(9), width: hp(9) }}
                   className="rounded-full"
                 />

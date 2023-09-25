@@ -5,9 +5,10 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { CachedImage } from "../helpers/images";
+import { useNavigation } from "@react-navigation/native";
 
 const RecipeCard = ({ item, idx }) => {
+  const navigation = useNavigation();
   let isEven = idx % 2 == 0;
   return (
     <Animated.View
@@ -23,14 +24,16 @@ const RecipeCard = ({ item, idx }) => {
           paddingRight: isEven ? 8 : 0,
         }}
         className="flex justify-center mb-4 space-y-1"
+        onPress={()=> navigation.navigate('RecipeDetails', {...item})}
       >
-        <CachedImage
-          uri = { item.strMealThumb }
+        <Image
+          source={{uri: item.strMealThumb }}
           style={{
             width: "100%",
             height: idx % 3 == 0 ? hp(25) : hp(35),
             borderRadius: 35,
           }}
+          sharedTransitionTag={item.strMeal}
         />
         <Text
           style={{ fontSize: hp(2) }}
